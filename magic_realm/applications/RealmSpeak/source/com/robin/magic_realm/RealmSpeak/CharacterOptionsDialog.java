@@ -58,12 +58,9 @@ public class CharacterOptionsDialog extends AggressiveDialog {
 	}
 
 	private void initComponents(boolean forceInnStart, boolean allowDevelopment, boolean developmentPastFour) {
-		setSize(400, 375);
-		getContentPane().setLayout(new BorderLayout());
-
-		JPanel sideBarPanel = new JPanel(new GridLayout(2,1));
-		
-		Box locationPanel = Box.createVerticalBox();
+        // right side of dialog: starting location and bonus chits
+        JPanel sideBarPanel = new JPanel(new GridLayout(2, 1));
+		JPanel locationPanel = new JPanel(new GridLayout(0, 1));
 		locationPanel.setBorder(BorderFactory.createTitledBorder("Starting Location"));
 		buttonGroup1 = new ButtonGroup();
 		String[] locs = character.getStartingLocations(forceInnStart);
@@ -74,11 +71,9 @@ public class CharacterOptionsDialog extends AggressiveDialog {
 			locationPanel.add(startChoose[i]);
 		}
 		startChoose[0].setSelected(true);
-		locationPanel.setPreferredSize(new Dimension(100,200));
-		locationPanel.add(Box.createVerticalGlue());
 		sideBarPanel.add(locationPanel);
-		
-		Box bonusChitPanel = Box.createVerticalBox();
+        
+        JPanel bonusChitPanel = new JPanel(new GridLayout(0, 1));
 		bonusChitPanel.setBorder(BorderFactory.createTitledBorder("Bonus Chits"));
 		buttonGroup3 = new ButtonGroup();
 		chooseBonusChits = new JRadioButton[3];
@@ -91,8 +86,8 @@ public class CharacterOptionsDialog extends AggressiveDialog {
 		}
 		chooseBonusChits[0].setSelected(true);
 		sideBarPanel.add(bonusChitPanel);
-		
-		JPanel centerPanel = new JPanel(new BorderLayout());
+
+        // left part of dialog: character level
 		JPanel levelPanel = new JPanel(new GridLayout(10,1));
 		levelPanel.setBorder(BorderFactory.createTitledBorder("Development Level"));
 		buttonGroup2 = new ButtonGroup();
@@ -113,12 +108,13 @@ public class CharacterOptionsDialog extends AggressiveDialog {
 		}
 		chooseLevel[3].setSelected(true);
 
-		centerPanel.add(levelPanel,BorderLayout.CENTER);
-		
-		add(centerPanel, BorderLayout.CENTER);
-		add(sideBarPanel,BorderLayout.EAST);
+        // put all those panels on top of the dialog
+        JPanel topPanel = new JPanel(new GridLayout(1, 2));
+        topPanel.add(levelPanel);
+        topPanel.add(sideBarPanel);
+        add(topPanel, BorderLayout.NORTH);
 
-		
+        // bottom line of dialog
 		Box line = Box.createHorizontalBox();
 		randomInventorySources = new JCheckBox("Fetch inventory from random location(s)", false);
 		line.add(randomInventorySources);
@@ -146,9 +142,14 @@ public class CharacterOptionsDialog extends AggressiveDialog {
 		getContentPane().add(line, "South");
 
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		setResizable(false);
+        pack();
 	}
 
+    @Override
+    public Dimension getMinimumSize() {
+        return getPreferredSize();
+    }
+        
 	public int getChosenBonusChits() {
 		for (int i = 0; i < chooseBonusChits.length; i++) {
 			if (chooseBonusChits[i].isSelected()) {
