@@ -80,7 +80,6 @@ public class CharacterVictoryConditionsDialog extends AggressiveDialog {
 		getContentPane().add(topPanel,"North");
 		Box box = Box.createVerticalBox();
 		if (hostPrefs.hasPref(Constants.QST_QUEST_CARDS)) {
-			setSize(200,130);
 			line = group.createLabelLine("Quest Points");
 				questPoints = createSpinner();
 			line.add(questPoints);
@@ -89,7 +88,6 @@ public class CharacterVictoryConditionsDialog extends AggressiveDialog {
 			box.add(line);
 		}
 		else {
-			setSize(200,250);
 			line = group.createLabelLine("Great Treasures");
 				greatTreasures = createSpinner();
 			line.add(greatTreasures);
@@ -160,7 +158,8 @@ public class CharacterVictoryConditionsDialog extends AggressiveDialog {
 		getContentPane().add(line,"South");
 		
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		setResizable(false);
+        pack();
+        setResizable(false);
 		updateControls();
 	}
 	private JSpinner createSpinner() {
@@ -189,7 +188,7 @@ public class CharacterVictoryConditionsDialog extends AggressiveDialog {
 	private int getIntFromSpinner(JSpinner spinner) {
 		return spinner==null?0:(Integer)spinner.getValue();
 	}
-	
+
 	public static void main(String[] args) {
 		ComponentTools.setSystemLookAndFeel();
 		RealmUtility.setupTextType();
